@@ -721,7 +721,7 @@
         const gridSize = canvas.width / tileCount; 
         
         const headImage = new Image(); headImage.src = 'head.png'; 
-        const eatSound = new Audio('sound.mp3');
+        const eatSound = new Audio('./sound.mp3');
 
         let goldSkin = localStorage.getItem('voxel_snake_gold') === 'true';
 
@@ -850,5 +850,6 @@
     </script>
 </body>
 </html>
+
 
 
