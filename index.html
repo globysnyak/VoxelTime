@@ -20,6 +20,7 @@
             --gold: #fbbf24;
             --red: #ef4444;
             --green: #22c55e;
+            --mystery: #d946ef; /* Цвет для кейса */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
@@ -216,6 +217,21 @@
         .donate-card.king h3 { color: var(--gold); }
         .donate-card.king .buy-btn { background: var(--gold); }
 
+        /* --- НОВЫЙ СТИЛЬ ДЛЯ КЕЙСА (ПО ЦЕНТРУ) --- */
+        .donate-card.case {
+            border: 2px solid var(--mystery);
+            background: linear-gradient(180deg, rgba(217, 70, 239, 0.15), rgba(15, 23, 42, 0.9));
+            /* Магия центрирования: занимает всю ширину грида и центрирует себя */
+            grid-column: 1 / -1; 
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .donate-card.case h3 { color: var(--mystery); }
+        .donate-card.case .buy-btn { background: var(--mystery); color: white; }
+        .donate-card.case .buy-btn:hover { box-shadow: 0 0 20px var(--mystery); }
+
+
         /* --- 9. ЗМЕЙКА --- */
         .snake-section {
             padding: 80px 20px; text-align: center;
@@ -405,6 +421,20 @@
                 </ul>
                 <a href="https://www.donationalerts.com/r/riisyyy" class="buy-btn" data-i18n="btn_buy">Купить</a>
             </div>
+
+            <div class="donate-card case reveal">
+                <div class="rank-icon">🎁</div>
+                <h3 class="pixel-font">DONATE CASE</h3>
+                <div class="price-tag">70₽</div>
+                <ul class="features-list" data-i18n-html="feat_case">
+                    <li><b>???</b> - Случайная привилегия</li>
+                    <li><b>Высокий</b> шанс на Legend</li>
+                    <li><b>Низкая</b> цена</li>
+                    <li>Испытай удачу!</li>
+                </ul>
+                <a href="https://www.donationalerts.com/r/riisyyy" class="buy-btn" data-i18n="btn_buy">Купить</a>
+            </div>
+
         </div>
     </section>
 
@@ -458,7 +488,8 @@
                 feat_poseidon: `<li><b>/feed</b> - Утолить голод</li><li><b>/heal</b> - Вылечиться</li><li><b>/hat</b> - Блок на голову</li><li>+ <b>Все</b> права Hero</li>`,
                 feat_legend: `<li><b>/tp</b> - Телепортация к игроку</li><li><b>/vanish</b> - Невидимость</li><li><b>Уникальный</b> префикс в табе</li><li><b>Все</b> команды предыдущих</li>`,
                 feat_zevs: `<li><b>/kittycannon</b> - Кото-пушка</li><li><b>/setwarp</b> - Создание варпов</li><li><b>/repairall</b> - Починить всё</li><li><b>/time</b> - Менять время</li>`,
-                feat_king: `<li><b>ВСЕ ВОЗМОЖНОСТИ ZEVS</b></li><li><b>Уникальный</b> статус Короля</li><li>Максимальный респект</li><li>Самый крутой префикс</li>`
+                feat_king: `<li><b>ВСЕ ВОЗМОЖНОСТИ ZEVS</b></li><li><b>Уникальный</b> статус Короля</li><li>Максимальный респект</li><li>Самый крутой префикс</li>`,
+                feat_case: `<li><b>???</b> - Случайная привилегия</li><li><b>Высокий</b> шанс на Legend</li><li><b>Низкая</b> цена</li><li>Испытай удачу!</li>`
             },
             uk: {
                 nav_main: "Головна", nav_start: "Як почати", nav_rules: "Правила", nav_donate: "Донат",
@@ -481,7 +512,8 @@
                 feat_poseidon: `<li><b>/feed</b> - Втамувати голод</li><li><b>/heal</b> - Вилікуватися</li><li><b>/hat</b> - Блок на голову</li><li>+ <b>Всі</b> права Hero</li>`,
                 feat_legend: `<li><b>/tp</b> - Телепортація до гравця</li><li><b>/vanish</b> - Невидимість</li><li><b>Унікальний</b> префікс в табі</li><li><b>Всі</b> команди попередніх</li>`,
                 feat_zevs: `<li><b>/kittycannon</b> - Кото-гармата</li><li><b>/setwarp</b> - Створення варпів</li><li><b>/repairall</b> - Полагодити все</li><li><b>/time</b> - Змінити час</li>`,
-                feat_king: `<li><b>ВСІ МОЖЛИВОСТІ ZEVS</b></li><li><b>Унікальний</b> статус Короля</li><li>Максимальный респект</li><li>Найкрутіший префікс</li>`
+                feat_king: `<li><b>ВСІ МОЖЛИВОСТІ ZEVS</b></li><li><b>Унікальний</b> статус Короля</li><li>Максимальный респект</li><li>Найкрутіший префікс</li>`,
+                feat_case: `<li><b>???</b> - Випадковий привілей</li><li><b>Високий</b> шанс на Legend</li><li><b>Низька</b> ціна</li><li>Випробуй удачу!</li>`
             },
             en: {
                 nav_main: "Home", nav_start: "How to Start", nav_rules: "Rules", nav_donate: "Store",
@@ -504,7 +536,8 @@
                 feat_poseidon: `<li><b>/feed</b> - Satisfy hunger</li><li><b>/heal</b> - Heal yourself</li><li><b>/hat</b> - Block on head</li><li>+ <b>All</b> Hero perms</li>`,
                 feat_legend: `<li><b>/tp</b> - Teleport to player</li><li><b>/vanish</b> - Invisibility</li><li><b>Unique</b> prefix in tab</li><li><b>All</b> previous commands</li>`,
                 feat_zevs: `<li><b>/kittycannon</b> - Kitty Cannon</li><li><b>/setwarp</b> - Create warps</li><li><b>/repairall</b> - Repair all</li><li><b>/time</b> - Change time</li>`,
-                feat_king: `<li><b>ALL ZEVS FEATURES</b></li><li><b>Unique</b> King Status</li><li>Maximum Respect</li><li>Coolest Prefix</li>`
+                feat_king: `<li><b>ALL ZEVS FEATURES</b></li><li><b>Unique</b> King Status</li><li>Maximum Respect</li><li>Coolest Prefix</li>`,
+                feat_case: `<li><b>???</b> - Random Rank</li><li><b>High</b> chance for Legend</li><li><b>Low</b> price</li><li>Try your luck!</li>`
             }
         };
 
