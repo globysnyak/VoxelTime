@@ -23,21 +23,27 @@
             --mystery: #d946ef;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; color-scheme: dark; }
+        img { max-width: 100%; display: block; }
+        section[id] { scroll-margin-top: 110px; }
 
-        /* --- ГЛОБАЛЬНЫЙ КУРСОР --- */
-        body, a, button, .ip-box, .lang-btn {
+        body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
             overflow-x: hidden;
             position: relative;
-            cursor: url('cursor.png') 16 16, crosshair; 
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            cursor: crosshair;
         }
-        
-        a:hover, button:hover, .ip-box:hover, .lang-btn:hover {
-             cursor: url('cursor.png') 16 16, crosshair !important;
-        }
+
+        a { color: inherit; text-decoration: none; cursor: pointer; }
+        button { font-family: inherit; color: inherit; }
+        button, .ip-box, .lang-btn { cursor: pointer; }
+        :focus-visible { outline: 2px solid var(--secondary); outline-offset: 3px; }
 
         h1, h2, h3, .pixel-font { font-family: 'VT323', monospace; text-transform: uppercase; letter-spacing: 2px; }
 
@@ -109,12 +115,26 @@
         }
         .nav-links a:hover::after { width: 100%; }
 
+        .nav-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            transition: 0.25s ease;
+        }
+        .nav-toggle:hover { border-color: rgba(168, 85, 247, 0.35); box-shadow: 0 0 18px rgba(168, 85, 247, 0.22); }
+        .nav-toggle-icon { font-size: 1.6rem; line-height: 1; }
+
         .lang-switch {
             margin-left: 20px;
             font-family: 'VT323', monospace;
             font-size: 1.1rem;
             color: #64748b;
-            cursor: url('cursor.png') 16 16, crosshair;
             border: 1px solid rgba(255,255,255,0.1);
             padding: 5px 8px;
             border-radius: 5px;
@@ -122,20 +142,32 @@
             display: flex;
             gap: 5px;
         }
-        .lang-btn { transition: 0.3s; padding: 0 2px; }
+        .lang-btn {
+            appearance: none;
+            background: transparent;
+            border: none;
+            padding: 0 2px;
+            font-family: inherit;
+            font-size: inherit;
+            line-height: 1;
+            transition: 0.3s;
+        }
         .lang-btn.active { color: var(--secondary); font-weight: bold; text-shadow: 0 0 10px var(--secondary); }
         .lang-btn.active:hover, .lang-btn:hover { color: white; }
 
         /* --- 5. HERO --- */
         .hero {
-            height: 95vh; display: flex; flex-direction: column;
+            min-height: 100svh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             position: relative; z-index: 1;
+            padding: 120px 20px 60px;
+            gap: 12px;
         }
         
         .glitch-title {
-            font-size: 6rem; line-height: 0.9; position: relative;
+            font-size: clamp(3.5rem, 7vw, 6rem); line-height: 0.9; position: relative;
             color: white; text-shadow: 4px 4px var(--primary);
+            filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.25));
             animation: glitchShake 3s infinite alternate;
         }
         @keyframes glitchShake {
@@ -144,14 +176,24 @@
             10% { text-shadow: 4px 4px var(--primary); transform: skew(0deg); }
         }
 
+        .hero-sub {
+            font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+            letter-spacing: 1px;
+            color: #cbd5e1;
+            max-width: 720px;
+        }
+
         .ip-box {
             margin-top: 40px; background: rgba(255, 255, 255, 0.05);
+            appearance: none;
             border: 2px solid var(--primary); padding: 20px 50px; border-radius: 15px;
-            font-size: 2rem; cursor: url('cursor.png') 16 16, crosshair; backdrop-filter: blur(10px);
+            font-size: clamp(1.2rem, 3vw, 2rem); backdrop-filter: blur(10px);
             transition: 0.3s; box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
-            display: flex; align-items: center; gap: 15px;
+            display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap;
         }
         .ip-box:hover { transform: scale(1.05); background: var(--primary); box-shadow: 0 0 60px rgba(168, 85, 247, 0.6); }
+        #ip-icon { transition: transform 0.2s ease; }
+        .ip-box:hover #ip-icon { transform: scale(1.1); }
 
         /* СТАТУС СЕРВЕРА */
         .server-status {
@@ -168,13 +210,19 @@
         .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 50px; }
         .step-card {
             background: rgba(255,255,255,0.03); padding: 30px; border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05); position: relative;
+            border: 1px solid rgba(255,255,255,0.06); position: relative;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            backdrop-filter: blur(10px);
         }
+        .step-card:hover { transform: translateY(-8px); border-color: rgba(59, 130, 246, 0.35); box-shadow: 0 18px 40px rgba(0,0,0,0.35); }
         .step-number {
             font-size: 4rem; position: absolute; top: -20px; right: 20px;
             color: rgba(255,255,255,0.05); font-weight: 800;
         }
         .step-card h3 { color: var(--secondary); margin-bottom: 15px; font-size: 1.5rem; }
+        .step-card p { color: #cbd5e1; line-height: 1.6; }
+
+        .steps-section h2 { font-size: clamp(2.5rem, 5vw, 3rem); }
 
         /* --- 7. RULES --- */
         .rules-section { padding: 100px 5%; background: rgba(0,0,0,0.3); }
@@ -202,7 +250,17 @@
             transition: 0.4s; position: relative; z-index: 1; display: flex; flex-direction: column;
             overflow: hidden;
         }
+        .donate-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 0%, rgba(168, 85, 247, 0.35), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
         .donate-card:hover { transform: scale(1.05); border-color: var(--primary); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .donate-card:hover::before { opacity: 1; }
         .rank-icon { font-size: 4rem; margin-bottom: 10px; animation: floatIcon 3s ease-in-out infinite; }
         @keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
@@ -211,8 +269,39 @@
         .features-list li { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; font-size: 0.95rem; }
         .features-list li b { color: var(--primary); }
 
-        .buy-btn { background: var(--text-main); color: black; padding: 15px; border-radius: 10px; font-weight: 800; text-decoration: none; text-transform: uppercase; transition: 0.3s; cursor: url('cursor.png') 16 16, crosshair; border: none; width: 100%; display: block;}
-        .buy-btn:hover { background: var(--primary); color: white; box-shadow: 0 0 20px var(--primary); }
+        .buy-btn {
+            appearance: none;
+            background: var(--text-main);
+            color: #0b1220;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-decoration: none;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.12);
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+        .buy-btn:hover { transform: translateY(-2px); background: var(--primary); color: white; box-shadow: 0 0 20px var(--primary); }
+        .buy-btn:active { transform: translateY(0); }
+
+        .buy-btn--inline { width: auto; }
+        .buy-btn--sm { padding: 10px 14px; font-size: 0.85rem; }
+        .buy-btn--lg { padding: 15px 30px; font-size: 1.2rem; }
+
+        .buy-btn--green { background: rgba(34, 197, 94, 0.12); border-color: rgba(34, 197, 94, 0.5); color: var(--green); }
+        .buy-btn--green:hover { background: rgba(34, 197, 94, 0.9); color: #001a0a; box-shadow: 0 0 25px rgba(34, 197, 94, 0.35); }
+
+        .buy-btn--mystery { background: rgba(217, 70, 239, 0.14); border-color: rgba(217, 70, 239, 0.55); color: #f5d0fe; }
+        .buy-btn--mystery:hover { background: rgba(217, 70, 239, 0.9); color: #150012; box-shadow: 0 0 25px rgba(217, 70, 239, 0.35); }
+
+        .buy-btn--ghost { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.18); color: white; }
+        .buy-btn--ghost:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.3); box-shadow: 0 0 20px rgba(255,255,255,0.12); }
 
         .donate-card.legend { border: 2px solid var(--secondary); background: linear-gradient(180deg, rgba(59, 130, 246, 0.15), rgba(15, 23, 42, 0.9)); }
         
@@ -225,7 +314,8 @@
 
         .donate-card.king { border: 2px solid var(--gold); background: linear-gradient(180deg, rgba(251, 191, 36, 0.15), rgba(15, 23, 42, 0.9)); }
         .donate-card.king h3 { color: var(--gold); }
-        .donate-card.king .buy-btn { background: var(--gold); }
+        .donate-card.king .buy-btn { background: var(--gold); border-color: rgba(251, 191, 36, 0.55); }
+        .donate-card.king .buy-btn:hover { background: var(--gold); color: #150c00; box-shadow: 0 0 20px rgba(251, 191, 36, 0.45); }
 
         .donate-card.case {
             border: 2px solid var(--mystery);
@@ -234,8 +324,8 @@
             width: 100%; max-width: 400px; margin: 0 auto;
         }
         .donate-card.case h3 { color: var(--mystery); }
-        .donate-card.case .buy-btn { background: var(--mystery); color: white; }
-        .donate-card.case .buy-btn:hover { box-shadow: 0 0 20px var(--mystery); }
+        .donate-card.case .buy-btn { background: var(--mystery); border-color: rgba(217, 70, 239, 0.55); color: white; }
+        .donate-card.case .buy-btn:hover { background: var(--mystery); box-shadow: 0 0 20px var(--mystery); }
 
         /* --- MODAL (POPUP) STYLES --- */
         .modal-overlay {
@@ -274,6 +364,9 @@
         
         .modal-close {
             position: absolute; top: 15px; right: 20px; font-size: 2rem; color: #64748b;
+            background: transparent;
+            border: none;
+            line-height: 1;
             cursor: pointer; transition: 0.3s;
         }
         .modal-close:hover { color: white; }
@@ -288,7 +381,7 @@
         #snakeCanvas {
             background: rgba(10, 10, 15, 0.9); border: 2px solid var(--secondary);
             border-radius: 10px; box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
-            max-width: 100%; cursor: url('cursor.png') 16 16, crosshair;
+            max-width: 100%;
         }
         .score-display { font-size: 2rem; color: var(--secondary); margin-bottom: 15px; }
         .control-hint { margin-top: 15px; color: #64748b; font-size: 0.9rem; }
@@ -303,8 +396,19 @@
 
         /* FOOTER */
         footer { padding: 50px; text-align: center; background: #020617; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 0px; }
-        .socials a { color: #64748b; font-size: 1.5rem; margin: 0 15px; transition: 0.3s; cursor: url('cursor.png') 16 16, crosshair; }
-        .socials a:hover { color: var(--primary); }
+        .socials { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+        .socials a {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: 0.25s ease;
+        }
+        .socials a:hover { color: white; background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3); }
         .creator-credit { margin-bottom: 30px; }
 
         /* --- 10. ТЕТРИС --- */
@@ -316,14 +420,49 @@
             border-radius: 20px;
             display: inline-block;
         }
+        .tetris-title { margin-bottom: 20px; color: var(--mystery); }
         #tetrisCanvas {
             background: rgba(0, 0, 0, 0.8);
             border: 2px solid var(--primary);
             box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
-            cursor: url('cursor.png') 16 16, crosshair;
+            border-radius: 10px;
+            max-width: 100%;
+            height: auto;
         }
 
-        @media (max-width: 768px) { .nav-links { display: none; } .glitch-title { font-size: 4rem; } }
+        @media (max-width: 768px) {
+            nav { padding: 12px 16px; }
+            .nav-toggle { display: inline-flex; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: calc(100% + 10px);
+                left: 16px;
+                right: 16px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 12px;
+                border-radius: 16px;
+                background: rgba(2, 6, 23, 0.96);
+                border: 1px solid rgba(255,255,255,0.08);
+                box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+            }
+            nav.open .nav-links { display: flex; }
+            .nav-links a { margin-left: 0; padding: 12px 10px; border-radius: 12px; background: rgba(255,255,255,0.04); text-align: center; }
+            .nav-links a::after { display: none; }
+            .lang-switch { margin-left: 0; justify-content: center; padding: 10px; border-radius: 12px; }
+            .hero { padding: 110px 16px 40px; }
+            .ip-box { padding: 18px 22px; }
+            .section-header h2 { font-size: 3.2rem; }
+            footer { padding: 40px 20px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .grid-plane, .cube, .glitch-title, .rank-icon, .modal-icon { animation: none !important; }
+            .reveal { transition: none; }
+        }
     </style>
 </head>
 <body>
@@ -335,7 +474,7 @@
 
     <div id="paymentModal" class="modal-overlay">
         <div class="modal-window">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <button class="modal-close" type="button" onclick="closeModal()" aria-label="Close">&times;</button>
             <span class="modal-icon">⚠️</span>
             <h2 class="modal-title" data-i18n="modal_title">ВАЖНО!</h2>
             <p class="modal-text" id="modalText">
@@ -345,30 +484,38 @@
     </div>
 
     <nav>
-        <img src="logo.png" alt="VoxelTime" class="nav-logo-img">
+        <a href="#top" class="nav-logo" aria-label="VoxelTime SMP">
+            <img src="logo.png" alt="VoxelTime" class="nav-logo-img">
+        </a>
+
+        <button class="nav-toggle" type="button" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+            <span class="nav-toggle-icon" aria-hidden="true">☰</span>
+        </button>
         
-        <div class="nav-links">
-            <a href="#" data-i18n="nav_main">Главная</a>
+        <div class="nav-links" id="navLinks">
+            <a href="#top" data-i18n="nav_main">Главная</a>
             <a href="#start" data-i18n="nav_start">Как начать</a>
             <a href="#rules" data-i18n="nav_rules">Правила</a>
             <a href="#shop" data-i18n="nav_donate">Донат</a>
-            <a href="https://discord.gg/QnmrekX4S9" target="_blank">Discord</a>
+            <a href="https://discord.gg/QnmrekX4S9" target="_blank" rel="noopener noreferrer">Discord</a>
             
-            <div class="lang-switch">
-                <span onclick="setLang('ru')" class="lang-btn active" id="btn-ru">RU</span> / 
-                <span onclick="setLang('uk')" class="lang-btn" id="btn-uk">UA</span> /
-                <span onclick="setLang('en')" class="lang-btn" id="btn-en">EN</span>
+            <div class="lang-switch" role="group" aria-label="Language">
+                <button type="button" onclick="setLang('ru')" class="lang-btn active" id="btn-ru">RU</button>
+                <span aria-hidden="true">/</span>
+                <button type="button" onclick="setLang('uk')" class="lang-btn" id="btn-uk">UA</button>
+                <span aria-hidden="true">/</span>
+                <button type="button" onclick="setLang('en')" class="lang-btn" id="btn-en">EN</button>
             </div>
         </div>
     </nav>
 
-    <section class="hero">
+    <section id="top" class="hero">
         <h1 class="pixel-font glitch-title">VOXEL TIME</h1>
-        <p style="font-size: 1.5rem; letter-spacing: 1px;" data-i18n="hero_desc">Твой лучший SMP опыт</p>
+        <p class="hero-sub" data-i18n="hero_desc">Твой лучший SMP опыт</p>
         
-        <div class="ip-box pixel-font" onclick="copyIp()">
+        <button class="ip-box pixel-font" type="button" onclick="copyIp()" aria-label="Copy server address">
             213.171.18.138:30307 <span id="ip-icon">📋</span>
-        </div>
+        </button>
 
         <div id="server-status" class="server-status pixel-font">
             ⌛ Загрузка статуса...
@@ -377,7 +524,7 @@
     </section>
 
     <section id="start" class="steps-section reveal">
-        <h2 class="pixel-font" style="font-size: 3rem;"><span data-i18n="steps_title_1">Как начать</span> <span style="color:var(--secondary)" data-i18n="steps_title_2">Играть?</span></h2>
+        <h2 class="pixel-font"><span data-i18n="steps_title_1">Как начать</span> <span style="color:var(--secondary)" data-i18n="steps_title_2">Играть?</span></h2>
         <div class="steps-grid">
             <div class="step-card">
                 <div class="step-number">01</div>
@@ -524,30 +671,30 @@
             <div class="score-display pixel-font"><span data-i18n="game_score">Счет</span>: <span id="snakeScore">0</span></div>
             <canvas id="snakeCanvas" width="400" height="400"></canvas>
             
-            <button onclick="startSnake()" class="buy-btn" style="margin-top: 20px; border-color: var(--green); color: var(--green); padding: 15px 30px; font-size: 1.2rem;" data-i18n="game_start">ИГРАТЬ</button>
+            <button onclick="startSnake()" class="buy-btn buy-btn--green buy-btn--inline buy-btn--lg" style="margin-top: 20px;" data-i18n="game_start">ИГРАТЬ</button>
             <p class="control-hint" data-i18n="game_controls">Управление: Стрелочки или WASD</p>
             
             <div id="unlockMsg" class="unlock-msg">
                 <h3 style="color:var(--gold)" class="pixel-font">GOLD SKIN UNLOCKED!</h3>
                 <p data-i18n="skin_unlock">Поздравляем! Вы получили ЗОЛОТОЙ скин!</p>
-                <button onclick="document.getElementById('unlockMsg').style.display='none'" class="buy-btn" style="margin-top:10px; border-color:white; color:white; font-size:0.8rem">OK</button>
+                <button onclick="document.getElementById('unlockMsg').style.display='none'" class="buy-btn buy-btn--ghost buy-btn--inline buy-btn--sm" style="margin-top:10px;">OK</button>
             </div>
         </div>
     </section>
 
     <footer>
         <div class="socials">
-            <a href="https://www.youtube.com/@Mancken_Minecraft" target="_blank">YouTube</a>
-            <a href="https://discord.gg/QnmrekX4S9" target="_blank">Discord</a>
+            <a href="https://www.youtube.com/@Mancken_Minecraft" target="_blank" rel="noopener noreferrer">YouTube</a>
+            <a href="https://discord.gg/QnmrekX4S9" target="_blank" rel="noopener noreferrer">Discord</a>
         </div>
         <p class="creator-credit">© 2026 VoxelTime SMP. By Mancken.</p>
 
         <section class="tetris-section">
-            <h2 class="pixel-font" style="margin-bottom: 20px; color: var(--mystery);">HEAD TETRIS</h2>
+            <h2 class="pixel-font tetris-title">HEAD TETRIS</h2>
             <div class="score-display pixel-font">Score: <span id="tetrisScore">0</span></div>
             <canvas id="tetrisCanvas" width="240" height="400"></canvas>
             <br>
-            <button onclick="startTetris()" class="buy-btn" style="margin-top: 20px; width: auto; display: inline-block;">START TETRIS</button>
+            <button onclick="startTetris()" class="buy-btn buy-btn--mystery buy-btn--inline buy-btn--lg" style="margin-top: 20px;">START TETRIS</button>
             <p class="control-hint">Стрелочки для управления. Вверх = Поворот</p>
         </section>
 
@@ -559,6 +706,10 @@
             ru: {
                 nav_main: "Главная", nav_start: "Как начать", nav_rules: "Правила", nav_donate: "Донат",
                 hero_desc: "Твой лучший SMP опыт",
+                status_loading: "⌛ Загрузка статуса...",
+                status_online: "🟢 ОНЛАЙН: {online} / {max}",
+                status_offline: "🔴 ОФФЛАЙН",
+                status_unknown: "❓ Статус неизвестен",
                 steps_title_1: "Как начать", steps_title_2: "Играть?",
                 step_1_title: "Скопируй IP", step_1_desc: "Нажми на адрес сервера выше, чтобы скопировать его в буфер обмена.",
                 step_2_title: "Версия 1.21.11", step_2_desc: "Запусти Minecraft на версии 1.21.11",
@@ -571,6 +722,7 @@
                 game_title_1: "Мини-Игра:", game_title_2: "Змейка", game_score: "Счет", game_start: "ИГРАТЬ", game_controls: "Управление: Стрелочки или WASD",
                 game_over: "ИГРА ОКОНЧЕНА", game_restart: "Нажми ИГРАТЬ",
                 skin_unlock: "Поздравляем! Вы получили ЗОЛОТОЙ скин!",
+                tetris_splash: "Нажми START TETRIS",
                 
                 // MODAL
                 modal_title: "ВАЖНО!",
@@ -588,6 +740,10 @@
             uk: {
                 nav_main: "Головна", nav_start: "Як почати", nav_rules: "Правила", nav_donate: "Донат",
                 hero_desc: "Твій найкращий SMP досвід",
+                status_loading: "⌛ Завантаження статусу...",
+                status_online: "🟢 ОНЛАЙН: {online} / {max}",
+                status_offline: "🔴 ОФЛАЙН",
+                status_unknown: "❓ Статус невідомий",
                 steps_title_1: "Як почати", steps_title_2: "Грати?",
                 step_1_title: "Скопіюй IP", step_1_desc: "Натисни на адресу сервера вище, щоб скопіювати її в буфер обміну.",
                 step_2_title: "Версія 1.21.11", step_2_desc: "Запусти Minecraft на версії 1.21.11",
@@ -600,6 +756,7 @@
                 game_title_1: "Міні-Гра:", game_title_2: "Змійка", game_score: "Рахунок", game_start: "ГРАТИ", game_controls: "Управління: Стрілочки або WASD",
                 game_over: "ГРУ ЗАКІНЧЕНО", game_restart: "Натисни ГРАТИ",
                 skin_unlock: "Вітаємо! Ви отримали ЗОЛОТИЙ скін!",
+                tetris_splash: "Натисни START TETRIS",
 
                 modal_title: "ВАЖЛИВО!",
                 modal_btn: "Я ЗРОЗУМІВ, ОПЛАТИТИ",
@@ -616,6 +773,10 @@
             en: {
                 nav_main: "Home", nav_start: "How to Start", nav_rules: "Rules", nav_donate: "Store",
                 hero_desc: "Your best SMP experience",
+                status_loading: "⌛ Loading status...",
+                status_online: "🟢 ONLINE: {online} / {max}",
+                status_offline: "🔴 OFFLINE",
+                status_unknown: "❓ Status unknown",
                 steps_title_1: "How to", steps_title_2: "Start?",
                 step_1_title: "Copy IP", step_1_desc: "Click the server address above to copy it to clipboard.",
                 step_2_title: "Version 1.21.11", step_2_desc: "Launch Minecraft version 1.21.11",
@@ -628,6 +789,7 @@
                 game_title_1: "Mini-Game:", game_title_2: "Snake", game_score: "Score", game_start: "START GAME", game_controls: "Controls: Arrows or WASD",
                 game_over: "GAME OVER", game_restart: "Press START GAME",
                 skin_unlock: "Congratulations! You unlocked the GOLD skin!",
+                tetris_splash: "Press START TETRIS",
 
                 modal_title: "IMPORTANT!",
                 modal_btn: "I UNDERSTAND, PAY",
@@ -644,11 +806,25 @@
         };
 
         let currentLang = 'ru';
+        try {
+            const storedLang = localStorage.getItem('voxel_lang');
+            const browserLangRaw = (navigator.language || '').slice(0, 2).toLowerCase();
+            const browserLang = browserLangRaw === 'ua' ? 'uk' : browserLangRaw;
+
+            if (storedLang && translations[storedLang]) currentLang = storedLang;
+            else if (translations[browserLang]) currentLang = browserLang;
+        } catch (_) {}
 
         function setLang(lang) {
+            if (!translations[lang]) return;
             currentLang = lang;
+
+            try { localStorage.setItem('voxel_lang', lang); } catch (_) {}
+            document.documentElement.lang = lang;
+
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('btn-' + lang).classList.add('active');
+            const activeBtn = document.getElementById('btn-' + lang);
+            if (activeBtn) activeBtn.classList.add('active');
 
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -659,6 +835,10 @@
                 const key = el.getAttribute('data-i18n-html');
                 if(translations[lang][key]) el.innerHTML = translations[lang][key];
             });
+
+            renderSnakeSplash();
+            renderTetrisSplash();
+            updateServerStatus(true);
         }
 
         // --- ЛОГИКА MODAL ---
@@ -684,18 +864,40 @@
             closeModal();
         }
 
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modal.classList.contains('active')) closeModal();
+        });
 
         // --- ОБЩИЕ СКРИПТЫ ---
-        function copyIp() {
-            navigator.clipboard.writeText("213.171.18.138:30307");
+        async function copyIp() {
+            const ip = "213.171.18.138:30307";
             const icon = document.getElementById('ip-icon');
-            icon.innerText = "✅";
-            setTimeout(() => icon.innerText = "📋", 2000);
+
+            try {
+                await navigator.clipboard.writeText(ip);
+                if (icon) icon.innerText = "✅";
+            } catch (err) {
+                try {
+                    const temp = document.createElement('textarea');
+                    temp.value = ip;
+                    temp.style.position = 'fixed';
+                    temp.style.opacity = '0';
+                    document.body.appendChild(temp);
+                    temp.focus();
+                    temp.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(temp);
+                    if (icon) icon.innerText = "✅";
+                } catch (_) {
+                    if (icon) icon.innerText = "❌";
+                }
+            }
+
+            if (icon) setTimeout(() => (icon.innerText = "📋"), 2000);
         }
 
         function reveal() {
@@ -712,31 +914,65 @@
         window.addEventListener("scroll", reveal);
         reveal();
 
+        // --- NAV (MOBILE) ---
+        const nav = document.querySelector('nav');
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        function setNavOpen(open) {
+            if (!nav || !navToggle) return;
+            nav.classList.toggle('open', open);
+            navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            const icon = navToggle.querySelector('.nav-toggle-icon');
+            if (icon) icon.textContent = open ? '✕' : '☰';
+        }
+
+        if (nav && navToggle && navLinks) {
+            navToggle.addEventListener('click', () => setNavOpen(!nav.classList.contains('open')));
+            navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setNavOpen(false)));
+            document.addEventListener('click', (e) => {
+                if (!nav.classList.contains('open')) return;
+                if (nav.contains(e.target)) return;
+                setNavOpen(false);
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') setNavOpen(false);
+            });
+        }
+
         // --- ЛОГИКА СТАТУСА СЕРВЕРА (API) ---
-        async function updateServerStatus() {
+        async function updateServerStatus(force = false) {
             const statusDiv = document.getElementById('server-status');
             const ip = "213.171.18.138";
             const port = "30307";
+            const tr = translations[currentLang] || translations['ru'];
+
+            if (force && statusDiv) {
+                statusDiv.classList.remove('online', 'offline');
+                statusDiv.innerHTML = tr.status_loading || "⌛ Loading status...";
+            } else if (statusDiv && !statusDiv.classList.contains('online') && !statusDiv.classList.contains('offline')) {
+                statusDiv.innerHTML = tr.status_loading || "⌛ Loading status...";
+            }
 
             try {
                 const response = await fetch(`https://api.mcsrvstat.us/2/${ip}:${port}`);
                 const data = await response.json();
 
                 if (data.online) {
-                    statusDiv.innerHTML = `🟢 ONLINE: ${data.players.online} / ${data.players.max}`;
+                    const tmpl = tr.status_online || "🟢 ONLINE: {online} / {max}";
+                    statusDiv.innerHTML = tmpl.replace('{online}', data.players.online).replace('{max}', data.players.max);
                     statusDiv.classList.add('online');
                     statusDiv.classList.remove('offline');
                 } else {
-                    statusDiv.innerHTML = "🔴 OFFLINE";
+                    statusDiv.innerHTML = tr.status_offline || "🔴 OFFLINE";
                     statusDiv.classList.add('offline');
                     statusDiv.classList.remove('online');
                 }
             } catch (error) {
                 console.error("Ошибка при получении статуса:", error);
-                statusDiv.innerHTML = "❓ Статус неизвестен";
+                statusDiv.innerHTML = tr.status_unknown || "❓ Status unknown";
             }
         }
-        updateServerStatus();
         setInterval(updateServerStatus, 60000);
 
         // --- ИЗОБРАЖЕНИЕ ГОЛОВЫ ---
@@ -745,10 +981,11 @@
         // --- ЛОГИКА ЗМЕЙКИ ---
         const canvas = document.getElementById('snakeCanvas');
         const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
         const tileCount = 20; 
         const gridSize = canvas.width / tileCount; 
         
-        const eatSound = new Audio('sound.mp3');
+        const eatSound = new Audio('sound.MP3');
 
         let goldSkin = localStorage.getItem('voxel_snake_gold') === 'true';
 
@@ -869,15 +1106,20 @@
                 case 40: case 83: if(yVelocity == -1) return; xVelocity = 0; yVelocity = 1; break;
             }
         }
-        
-        ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'white'; ctx.font = "20px monospace"; ctx.textAlign = "center";
-        ctx.fillText("Press START GAME", canvas.width/2, canvas.height/2);
+
+        function renderSnakeSplash() {
+            if (gameRunning) return;
+            const txt = (translations[currentLang] && translations[currentLang]['game_restart']) || "Press START GAME";
+            ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white'; ctx.font = "22px VT323"; ctx.textAlign = "center";
+            ctx.fillText(txt, canvas.width/2, canvas.height/2);
+        }
 
 
         // --- ЛОГИКА ТЕТРИСА (HEAD TETRIS) ---
         const tetrisCanvas = document.getElementById('tetrisCanvas');
         const tCtx = tetrisCanvas.getContext('2d');
+        tCtx.imageSmoothingEnabled = false;
         const tTile = 20; 
         const tRows = 20;
         const tCols = 12;
@@ -1083,11 +1325,16 @@
             }
         }
 
-        // Init Tetris screen
-        tCtx.fillStyle = '#0f172a';
-        tCtx.fillRect(0, 0, tetrisCanvas.width, tetrisCanvas.height);
-        tCtx.fillStyle = 'white'; tCtx.font = "20px monospace"; tCtx.textAlign = "center";
-        tCtx.fillText("Press START TETRIS", tetrisCanvas.width/2, tetrisCanvas.height/2);
+        function renderTetrisSplash() {
+            if (tetrisRunning) return;
+            const txt = (translations[currentLang] && translations[currentLang]['tetris_splash']) || "Press START TETRIS";
+            tCtx.fillStyle = '#0f172a';
+            tCtx.fillRect(0, 0, tetrisCanvas.width, tetrisCanvas.height);
+            tCtx.fillStyle = 'white'; tCtx.font = "22px VT323"; tCtx.textAlign = "center";
+            tCtx.fillText(txt, tetrisCanvas.width/2, tetrisCanvas.height/2);
+        }
+
+        setLang(currentLang);
 
     </script>
 </body>
